@@ -1,0 +1,49 @@
+table, th, td {
+  border: 2px solid black;
+  border-collapse: collapse;
+  padding: 6px 50px;
+}
+th{
+    background-color: aqua;
+    color: rgb(34, 0, 255);
+}
+
+.heading{
+  place-items: center; 
+}
+.wrapper {
+  display: grid;
+  place-items: center; /* centers in both axes */
+  /*min-height: 100vh;*/
+}
+
+.btn {
+  display: inline-block;
+  margin: inherit;
+  background: green;
+  padding: 8px;
+  color: white;
+  text-decoration: none;
+}
+.btn1 {
+  display: inline-block;
+  background: rgb(61, 79, 91);
+  padding: 8px;
+  color: white;
+  text-decoration: none;
+  border-radius: 10%;
+  border-color: rgb(255, 0, 0);
+}
+
+.navbar {
+  display: flex;
+  align-items: right;
+  gap: 12px;            /* optional spacing */
+  padding: 12px 16px;
+  /* background: #333; */
+  color: white;
+}
+
+.navbar{
+  margin-left: auto;    /* pushes this button to the far right */
+}

@@ -1,0 +1,122 @@
+/* .form-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  } */
+
+form{
+    border: 2px solid red;
+    border-radius: 5px;
+    /* padding: 10px; */
+    padding-bottom: 100px;
+}
+
+nav{
+    background-color: aqua;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+h2{
+    font-family: Arial, Helvetica, sans-serif;
+}
+.navhd{
+    text-align: center;
+}
+#salaryForm{
+    display: flex;
+    justify-content: space-evenly;
+}
+button{
+    padding: 15px 100px;
+    background-color: rgb(0, 195, 255);
+    border: none;
+    border-radius: 5px;
+}
+button:hover{
+    cursor: pointer;
+}
+
+/* input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: #fff;
+  color: #1f2937;
+  font-size: 16px;
+}
+input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+input::placeholder {
+  color: #9ca3af;
+} */
+
+
+/* input {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.25);
+  color: #0f172a;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+input:focus {
+  border-color: rgba(99, 102, 241, 0.8);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.25);
+  outline: none;
+} */
+
+/* :root {
+  --input-bg: #1e1e1e;
+  --input-text: #e5e7eb;
+  --input-border: #374151;
+  --focus: #93c5fd;
+}
+input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  background: var(--input-bg);
+  color: var(--input-text);
+}
+input:focus {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.25);
+  outline: none;
+} */
+
+input:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+:root {
+  --border: #cbd5e1;
+  --bg: #ffffff;
+  --text: #1f2937;
+  --focus: #2563eb;
+}
+input {
+  width: 100%;
+  padding: .6rem .75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+}
+input:focus {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  outline: none;
+}

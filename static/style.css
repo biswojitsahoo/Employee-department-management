@@ -1,0 +1,252 @@
+:root {
+  --bg: #ffffff;
+  --text: #111827;
+  --border: #e5e7eb;
+  --primary: #1d4ed8;
+  --primary-dark: #1e40af;
+  --secondary: #374151;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Navbar container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Left: Brand area */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+  user-select: none;
+}
+
+.brand-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+/* Right: Buttons */
+.nav-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* Button styles */
+.btn {
+  padding: 9px 14px;
+  border-radius: 6px;
+  border: 2px solid rgba(170, 255, 144, 0.79);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+  background: #79b0e7;
+}
+
+/* Accessibility niceties for keyboard users */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+@media (max-width: 640px) {
+  /* Optional: stack or compress on small screens */
+  .nav-actions {
+    gap: 8px;
+  }
+  .brand-name {
+    display: none; /* optional: hide text on very small screens to save space */
+  }
+}
+
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 8px;
+}
+.btn {
+  display: inline-block;
+  background: green;
+  padding: 8px;
+  color: white;
+  text-decoration: none;
+}
+
+ .pagination {
+    margin-top: 10px;
+    text-align: center;
+  }
+  .pagination button {
+    margin: 2px;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+  }
+  .pagination button.active {
+    background-color: #007bff;
+    color: white;
+  }
+footer{
+  text-align: center;
+  padding-top: 30px;
+}
+.headempdtl{
+  align-content: center;
+  justify-content: center;
+}
+
+
+/* Global helpers */
+:root {
+  --bg: #ffffff;
+  --text: #1f2937;
+  --border: #e5e7eb;
+  --header: #395ac6;
+  --header-text: #ffffff;
+  --row-alt: #f0f3f8;
+  --row-hover: #eef2ff;
+  --primary: #1d4ed8;
+  --primary-dark: #1e40af;
+  --muted: #6b7280;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.4;
+}
+
+/* Container around the table (adds subtle border and radius) */
+#tablediv {
+  margin: 24px auto;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  overflow: hidden;
+  max-width: 100%;
+  /* Optional shadow for depth */
+  box-shadow: 0 2px 6px rgba(0,0,0,.04);
+}
+
+/* Make the table horizontally scrollable on small screens while keeping full width on large screens */
+#tablediv table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px; /* ensures horizontal scroll on narrow viewports */
+}
+
+/* Table header */
+#dataTable thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  text-align: left;
+  padding: 12px 14px;
+  background: var(--header);
+  color: var(--header-text);
+  font-weight: 700;
+  font-size: 14px;
+  border-bottom: 2px solid rgba(0,0,0,.05);
+  white-space: nowrap;
+}
+
+/* Table body cells */
+#dataTable tbody td {
+  padding: 10px 12px;
+  border-bottom: 3px solid var(--border);
+  font-size: 14px;
+  font-weight: 500;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* Zebra striping for readability */
+#dataTable tbody tr:nth-child(odd) {
+  background: #fbfcfe;
+}
+#dataTable tbody tr:nth-child(even) {
+  background: var(--row-alt);
+}
+
+/* Row hover for better UX */
+#dataTable tbody tr:hover {
+  background: rgba(110, 244, 253, 0.651);
+}
+
+/* Simple action button/link styling (the .btn1 class in your HTML) */
+a.btn1 {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #0b1220;
+  background: #befad2;
+  border: 1px solid #c6d0ff;
+  transition: transform .1s ease-in-out, background .2s ease;
+}
+a.btn1:hover {
+  background: #beceff;
+}
+a.btn1:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Accessibility helpers for keyboard users */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Optional: hide sensitive column on small screens (Aadhaar Number) */
+@media (max-width: 900px) {
+  /* Hide the 7th column (Aadhaar Number) in header and body */
+  #dataTable thead th:nth-child(7),
+  #dataTable tbody td:nth-child(7) {
+    display: none;
+  }
+}

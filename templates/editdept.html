@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modify Department</title>
+</head>
+<body>
+    <h2>Edit Department</h2>
+<form method="POST">
+    Department Id: <input type="number" name="depid" value="{{ department[0] }}" ><br><br>
+    Department Name: <input type="text" name="deptname" value="{{ department[1] }}"><br><br>
+    <button type="submit">Update</button>
+</form>
+</body>
+</html>
