@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/deptstyle.css">
+    <title>Department Details</title>
+</head>
+<body>
+<nav class="navbar">
+    <a href="/addDepartment" class="btn">Add Department</a>
+</nav> 
+<div class = 'heading'>   
+    <h2>Department details</h2>
+</div>
+<div class = 'wrapper'>
+<table>
+    <tr>
+        <th>Department ID</th>
+        <th>Department Name</th>
+        <th>Actions</th>
+    </tr>
+    {% for dep in department %}
+    <tr>
+        <td>{{ dep[0] }}</td>
+        <td>{{ dep[1] }}</td>
+        <td>
+            <a href="/editdept/{{ dep[0] }}" class="btn1">Edit</a> |
+            <a href="/deletedept/{{ dep[0] }}" class="btn1" onclick="return confirm('Delete this department?')">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+</body>
+</html>

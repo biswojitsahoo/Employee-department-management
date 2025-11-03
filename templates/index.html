@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Management</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header class="navbar" role="navigation" aria-label="Main navigation">
+    <!-- Left: Logo + Brand Name -->
+    <div class="brand" aria-label="Brand">
+      <div class="logo" aria-label="EM Logo">EM</div>
+      <span class="brand-name">Employee Manager</span>
+    </div>
+
+    <!-- Right: Action Buttons -->
+    <nav class="nav-actions" aria-label="User actions">
+      <a href="/add" class="btn">Add Employee</a>
+      <a href="/department" class="btn" target="_blank">Manage Department</a>
+    </nav>
+  </header>
+<div>
+<h2 class="headempdtl">Employee Details</h2>
+</div>
+<div id="tablediv">
+<table id="dataTable">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Salary</th>
+        <th>Department</th>
+        <th>Department ID</th>
+        <th>DOB Of Employee</th>
+        <th>Aadhaar Number</th>
+        <th>Active Status</th>
+        <th>Actions</th>
+        
+    </tr>
+    </thead>
+    <tbody>
+    {% for emp in employees %}
+    <tr>
+        <td>{{ emp[0] }}</td>
+        <td>{{ emp[1] }}</td>
+        <td>{{ emp[2] }}</td>
+        <td>{{ emp[3] }}</td>
+        <td>{{ emp[4] }}</td>
+        <td>{{ emp[5] }}</td>
+        <td>{{ emp[6] }}</td>
+        <td>{{ emp[7] }}</td>
+        <td>
+            <a href="/edit/{{ emp[0] }}" class="btn1">Edit</a> |
+            <a href="/delete/{{ emp[0] }}" class="btn1" onclick="return confirm('Delete this employee?')">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</div>
+<div class="pagination" id="pagination"></div>
+ 
+<script>
+const rowsPerPage = 5;
+const table = document.getElementById("dataTable");
+const tbody = table.querySelector("tbody");
+const rows = Array.from(tbody.querySelectorAll("tr"));
+const totalPages = Math.ceil(rows.length / rowsPerPage);
+const pagination = document.getElementById("pagination");
+ 
+function showPage(page) {
+  const start = (page - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  rows.forEach((row, index) => {
+    row.style.display = (index >= start && index < end) ? "" : "none";
+  });
+ 
+  // Update active button
+  document.querySelectorAll(".pagination button").forEach(btn => btn.classList.remove("active"));
+  document.getElementById(`page${page}`).classList.add("active");
+}
+ 
+// Create pagination buttons
+for (let i = 1; i <= totalPages; i++) {
+  const button = document.createElement("button");
+  button.textContent = i;
+  button.id = `page${i}`;
+  button.addEventListener("click", () => showPage(i));
+  pagination.appendChild(button);
+}
+ 
+// Show first page initially
+showPage(1);
+</script>
+
+
+<footer>
+  <h5>Made by The Neural Striker</h5>
+</footer>
+</body>
+</html>
