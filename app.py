@@ -2,16 +2,16 @@ from flask import Flask, render_template, request, redirect, flash
 import oracledb
  
 app = Flask(__name__)
-app.secret_key = "biswojit0000sahoo" 
+app.secret_key = "theneuralstriker@biswojit" 
  
 oracledb.init_oracle_client(lib_dir= r"C:\oracle\instantclient_23_9")
 # Oracle THIN Mode Connection
 connection = oracledb.connect(
-    user="pspdctmdev",
-    password="SummerDCTM_01_Dev",
-    host="AWSEPNNVAL0002",
+    user="your user name",
+    password="your password",
+    host="hostname",
     port=1521,
-    sid="DNV55102"
+    sid="sis"
 )
 
 # Fetch Employee data
