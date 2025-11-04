@@ -29,6 +29,7 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
+  background: #00ffcca5;
 }
 
 /* Left: Brand area */
@@ -264,7 +265,7 @@ a.btn1:focus-visible {
 }
 
 .dltbtn{
-  padding: 4px 20px;
+  padding: 7px 20px;
   border-radius: 6px;
   border: 2px solid rgba(170, 255, 144, 0.79);
   cursor: pointer;
@@ -284,4 +285,41 @@ a.btn1:focus-visible {
 .dltbtn-btn{
   padding-top: 10px;
 
+}
+
+.hdtag-btn{
+   padding-top: 10px;
+}
+
+#vwbtn{
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #0b1220;
+  background: #befad2;
+  border: 1px solid #c6d0ff;
+  transition: transform .1s ease-in-out, background .2s ease;
+}
+
+#vwbtn:hover{
+  background: #beceff;
+
+}
+
+.clsbtn{
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #ffffff;
+  background: #858686c2;
+  border: 1px solid #333335a5;
+  transition: transform .1s ease-in-out, background .2s ease;
+}
+
+.clsbtn:hover{
+  background: #abb7d0;
 }

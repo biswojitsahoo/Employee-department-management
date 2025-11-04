@@ -11,18 +11,18 @@ app.secret_key = "biswojit0000sahoo"
 oracledb.init_oracle_client(lib_dir= r"C:\oracle\instantclient_23_9")
 # Oracle THIN Mode Connection
 connection = oracledb.connect(
-    user="<your_username>",
-    password="<your_password>",
-    host="<your_host>",
+    user="pspdctmdev",
+    password="SummerDCTM_01_Dev",
+    host="AWSEPNNVAL0002",
     port=1521,
-    sid="<your_sid>"  # or you can put your service here. like service="<your_servicename>
+    sid="DNV55102"
 )
 
 # Fetch Employee data
 @app.route('/')
 def index():
     cursor = connection.cursor()
-    cursor.execute("SELECT T.EMP_ID, T.EMP_NAME, T.EMP_SAL, T.DEPT_ID, T1.DEPT_NAME,  CAST(TRUNC(DOB) AS DATE) as DOB, T.AADHAAR, T.ACTIVE_STATUS  FROM EMPLOYEE T, DEPARTMENT T1 WHERE T.DEPT_ID=T1.DEPT_ID order by emp_id desc")
+    cursor.execute("SELECT T.EMP_ID, T.EMP_NAME, T.EMP_SAL, T.DEPT_ID, T1.DEPT_NAME,  CAST(TRUNC(DOB) AS DATE) as DOB, T.AADHAAR, T.ACTIVE_STATUS,T3.Basic_sal, T3.HR_Alwc, T3.lt_Alwc, T3.Per_Alwc, T3.City_alwc, T3.perf_Pay, T3.Total  FROM EMPLOYEE T, DEPARTMENT T1, employee_salary_details T3  WHERE T.DEPT_ID=T1.DEPT_ID AND T.EMP_ID=T3.EMP_ID order by emp_id desc")
     employees = cursor.fetchall()
     return render_template('index.html', employees=employees)
 
@@ -180,6 +180,20 @@ def download_pdf():
  
     return send_file(buffer, as_attachment=True, download_name="Employee_Report.pdf", mimetype='application/pdf')
 
+# # View Employee Details
+# @app.route('/view/<int:id>')
+# def view_employee(id):
+#     cursor = connection.cursor()
+#     cursor.execute("""
+#         SELECT t1.EMP_NAME,
+#                t.Basic_sal, t.HR_Alwc, t.lt_Alwc, t.Per_Alwc, t.City_alwc, t.perf_Pay, t.Total
+#         FROM employee t1
+#         JOIN employee_salary_details t ON t1.emp_id = t.emp_id
+#         JOIN department t2 ON t1.dept_id = t2.dept_id
+#         WHERE t1.emp_id = :1
+#     """, [id])
+#     employee = cursor.fetchone()
+#     return render_template('view.html', employee=employee)
  
 if __name__ == '__main__':
     app.run(debug=True)
