@@ -250,3 +250,38 @@ a.btn1:focus-visible {
     display: none;
   }
 }
+
+.pagebtn{
+  display : flex;
+  justify-content: space-between;
+
+  /* justify-content: center; */
+}
+
+.dlbtn{
+  display : flex;
+  justify-content: space-between;
+}
+
+.dltbtn{
+  padding: 4px 20px;
+  border-radius: 6px;
+  border: 2px solid rgba(170, 255, 144, 0.79);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  display: inline-block;
+  background: rgb(13, 217, 249);
+  color: rgb(255, 255, 255);
+  text-decoration: none;
+}
+
+.dltbtn:hover {
+  background: #79b0e7;
+}
+
+.dltbtn-btn{
+  padding-top: 10px;
+
+}

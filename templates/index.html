@@ -18,8 +18,13 @@
       <a href="/department" class="btn" target="_blank">Manage Department</a>
     </nav>
   </header>
-<div>
-<h2 class="headempdtl">Employee Details</h2>
+<div class="dlbtn">
+  <div>
+    <h2 class="headempdtl">Employee Details</h2>
+  </div>
+  <div>
+    <a href="/download_pdf" class="dltbtn" style="margin:10px;">Download PDF</a>
+  </div>
 </div>
 <div id="tablediv">
 <table id="dataTable">
@@ -57,8 +62,11 @@
     </tbody>
 </table>
 </div>
-<div class="pagination" id="pagination"></div>
- 
+<div class="pagebtn">
+  <div>
+  </div>
+  <div class="pagination" id="pagination"></div>
+</div>
 <script>
 const rowsPerPage = 5;
 const table = document.getElementById("dataTable");

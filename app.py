@@ -1,17 +1,21 @@
 from flask import Flask, render_template, request, redirect, flash
 import oracledb
+from flask import send_file
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+import io
  
 app = Flask(__name__)
-app.secret_key = "theneuralstriker@biswojit" 
+app.secret_key = "biswojit0000sahoo" 
  
 oracledb.init_oracle_client(lib_dir= r"C:\oracle\instantclient_23_9")
 # Oracle THIN Mode Connection
 connection = oracledb.connect(
-    user="your user name",
-    password="your password",
-    host="hostname",
+    user="<your_username>",
+    password="<your_password>",
+    host="<your_host>",
     port=1521,
-    sid="sis"
+    sid="<your_sid>"  # or you can put your service here. like service="<your_servicename>
 )
 
 # Fetch Employee data
@@ -126,6 +130,56 @@ def delete_department(deptid):
     cursor.execute("DELETE FROM DEPARTMENT WHERE DEPT_ID=:1", [deptid])
     connection.commit()
     return redirect('/department')
+
+# Download Employee details in PDF format
+@app.route('/download_pdf')
+def download_pdf():
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT T.EMP_ID, T.EMP_NAME, T.EMP_SAL, T.DEPT_ID, T1.DEPT_NAME,
+               TO_CHAR(T.DOB, 'YYYY-MM-DD') AS DOB, T.AADHAAR, T.ACTIVE_STATUS  
+        FROM EMPLOYEE T, DEPARTMENT T1
+        WHERE T.DEPT_ID=T1.DEPT_ID
+        ORDER BY T.EMP_ID DESC
+    """)
+    employees = cursor.fetchall()
+ 
+    # Create an in-memory PDF
+    buffer = io.BytesIO()
+    pdf = canvas.Canvas(buffer, pagesize=letter)
+    pdf.setTitle("Employee Details Report")
+ 
+    pdf.setFont("Helvetica-Bold", 14)
+    pdf.drawString(200, 770, "Employee Details Report")
+ 
+    pdf.setFont("Helvetica", 10)
+    y = 740
+    headers = ["EMP_ID", "NAME", "SALARY", "DEPT", "DEPT_NAME", "DOB", "AADHAAR", "STATUS"]
+    x_positions = [40, 80, 170, 230, 300, 390, 470, 550]
+ 
+    # Draw table headers
+    for i, header in enumerate(headers):
+        pdf.drawString(x_positions[i], y, header)
+ 
+    y -= 20
+    pdf.line(30, y + 10, 580, y + 10)
+ 
+    # Draw employee data
+    for emp in employees:
+        if y < 60:  # Create new page if space runs out
+            pdf.showPage()
+            pdf.setFont("Helvetica", 10)
+            y = 770
+ 
+        for i, value in enumerate(emp):
+            pdf.drawString(x_positions[i], y, str(value))
+        y -= 18
+ 
+    pdf.save()
+    buffer.seek(0)
+ 
+    return send_file(buffer, as_attachment=True, download_name="Employee_Report.pdf", mimetype='application/pdf')
+
  
 if __name__ == '__main__':
     app.run(debug=True)
