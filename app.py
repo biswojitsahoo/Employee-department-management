@@ -1,21 +1,24 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, send_file
 import oracledb
-from flask import send_file
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from reportlab.lib import colors
 import io
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
  
 app = Flask(__name__)
 app.secret_key = "biswojit0000sahoo" 
  
-oracledb.init_oracle_client(lib_dir= r"C:\oracle\instantclient_23_9")
+oracledb.init_oracle_client(lib_dir= r"C:\oracle\instantclient-basic-windows.x64-23.9.0.25.07\instantclient_23_9")
 # Oracle THIN Mode Connection
 connection = oracledb.connect(
-    user="",
-    password="",
-    host="",
+    user="core",
+    password="CORE",
+    host="localhost",
     port=1521,
-    sid=""
+    sid="xe"
 )
 
 # Fetch Employee data
@@ -132,6 +135,54 @@ def delete_department(deptid):
     return redirect('/department')
 
 # Download Employee details in PDF format
+# @app.route('/download_pdf')
+# def download_pdf():
+#     cursor = connection.cursor()
+#     cursor.execute("""
+#         SELECT T.EMP_ID, T.EMP_NAME, T.EMP_SAL, T.DEPT_ID, T1.DEPT_NAME,
+#                TO_CHAR(T.DOB, 'YYYY-MM-DD') AS DOB, T.AADHAAR, T.ACTIVE_STATUS  
+#         FROM EMPLOYEE T, DEPARTMENT T1
+#         WHERE T.DEPT_ID=T1.DEPT_ID
+#         ORDER BY T.EMP_ID DESC
+#     """)
+#     employees = cursor.fetchall()
+ 
+#     # Create an in-memory PDF
+#     buffer = io.BytesIO()
+#     pdf = canvas.Canvas(buffer, pagesize=letter)
+#     pdf.setTitle("Employee Details Report")
+ 
+#     pdf.setFont("Helvetica-Bold", 14)
+#     pdf.drawString(200, 770, "Employee Details Report")
+ 
+#     pdf.setFont("Helvetica", 10)
+#     y = 740
+#     headers = ["EMP_ID", "NAME", "SALARY", "DEPT", "DEPT_NAME", "DOB", "AADHAAR", "STATUS"]
+#     x_positions = [40, 80, 170, 230, 300, 390, 470, 550]
+ 
+#     # Draw table headers
+#     for i, header in enumerate(headers):
+#         pdf.drawString(x_positions[i], y, header)
+ 
+#     y -= 20
+#     pdf.line(30, y + 10, 580, y + 10)
+ 
+#     # Draw employee data
+#     for emp in employees:
+#         if y < 60:  # Create new page if space runs out
+#             pdf.showPage()
+#             pdf.setFont("Helvetica", 10)
+#             y = 770
+ 
+#         for i, value in enumerate(emp):
+#             pdf.drawString(x_positions[i], y, str(value))
+#         y -= 18
+ 
+#     pdf.save()
+#     buffer.seek(0)
+ 
+#     return send_file(buffer, as_attachment=True, download_name="Employee_Report.pdf", mimetype='application/pdf')
+
 @app.route('/download_pdf')
 def download_pdf():
     cursor = connection.cursor()
@@ -143,57 +194,55 @@ def download_pdf():
         ORDER BY T.EMP_ID DESC
     """)
     employees = cursor.fetchall()
- 
-    # Create an in-memory PDF
-    buffer = io.BytesIO()
-    pdf = canvas.Canvas(buffer, pagesize=letter)
-    pdf.setTitle("Employee Details Report")
- 
-    pdf.setFont("Helvetica-Bold", 14)
-    pdf.drawString(200, 770, "Employee Details Report")
- 
-    pdf.setFont("Helvetica", 10)
-    y = 740
-    headers = ["EMP_ID", "NAME", "SALARY", "DEPT", "DEPT_NAME", "DOB", "AADHAAR", "STATUS"]
-    x_positions = [40, 80, 170, 230, 300, 390, 470, 550]
- 
-    # Draw table headers
-    for i, header in enumerate(headers):
-        pdf.drawString(x_positions[i], y, header)
- 
-    y -= 20
-    pdf.line(30, y + 10, 580, y + 10)
- 
-    # Draw employee data
-    for emp in employees:
-        if y < 60:  # Create new page if space runs out
-            pdf.showPage()
-            pdf.setFont("Helvetica", 10)
-            y = 770
- 
-        for i, value in enumerate(emp):
-            pdf.drawString(x_positions[i], y, str(value))
-        y -= 18
- 
-    pdf.save()
-    buffer.seek(0)
- 
-    return send_file(buffer, as_attachment=True, download_name="Employee_Report.pdf", mimetype='application/pdf')
 
-# # View Employee Details
-# @app.route('/view/<int:id>')
-# def view_employee(id):
-#     cursor = connection.cursor()
-#     cursor.execute("""
-#         SELECT t1.EMP_NAME,
-#                t.Basic_sal, t.HR_Alwc, t.lt_Alwc, t.Per_Alwc, t.City_alwc, t.perf_Pay, t.Total
-#         FROM employee t1
-#         JOIN employee_salary_details t ON t1.emp_id = t.emp_id
-#         JOIN department t2 ON t1.dept_id = t2.dept_id
-#         WHERE t1.emp_id = :1
-#     """, [id])
-#     employee = cursor.fetchone()
-#     return render_template('view.html', employee=employee)
+    # Prepare PDF buffer
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+    elements = []
+
+    # Title
+    styles = getSampleStyleSheet()
+    title = Paragraph("<b>Employee Details Report</b>", styles["Title"])
+    elements.append(title)
+    elements.append(Spacer(1, 12))
+
+    # Table headers
+    headers = ["EMP_ID", "NAME", "SALARY", "DEPT", "DEPT_NAME", "DOB", "AADHAAR", "STATUS"]
+
+    # Combine headers + employee data
+    data = [headers] + employees
+
+    # Create the table
+    table = Table(data, repeatRows=1)
+
+    # Style the table
+    table.setStyle(TableStyle([
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.black),           # Borders for all cells
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),       # Header background
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),         # Header font
+        ('FONTSIZE', (0, 0), (-1, -1), 9),                       # Font size for all
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),                   # Center align text
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),                  # Vertically center
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+        ('TOPPADDING', (0, 0), (-1, 0), 8),
+    ]))
+
+    # Add the table to the document
+    elements.append(table)
+
+    # Build PDF
+    doc.build(elements)
+
+    # Move buffer to start
+    buffer.seek(0)
+
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name="Employee_Report.pdf",
+        mimetype='application/pdf'
+    )
+
  
 if __name__ == '__main__':
     app.run(debug=True)
