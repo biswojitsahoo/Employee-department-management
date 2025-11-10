@@ -11,11 +11,11 @@ from reportlab.lib.styles import getSampleStyleSheet
 app = Flask(__name__)
 app.secret_key = "biswojit0000sahoo" 
  
-oracledb.init_oracle_client(lib_dir= r"C:\oracle\instantclient-basic-windows.x64-23.9.0.25.07\instantclient_23_9")
+oracledb.init_oracle_client(lib_dir= r"C:\oracle\instantclient_23_9")
 # Oracle THIN Mode Connection
 connection = oracledb.connect(
-    user="core",
-    password="CORE",
+    user="user",
+    password="pass",
     host="localhost",
     port=1521,
     sid="xe"
@@ -32,6 +32,7 @@ def index():
  # Add Employee data
 @app.route('/add', methods=['GET', 'POST'])
 def add_employee():
+    cursor = connection.cursor()
     if request.method == 'POST':
         name = request.form['name']
         sal = request.form['salary']
@@ -52,7 +53,9 @@ def add_employee():
         cursor.execute("INSERT INTO employee_salary_details (EMP_ID, BASIC_SAL, HR_ALWC, LT_ALWC, PER_ALWC, CITY_ALWC, PERF_PAY, TOTAL) VALUES (EMP_SEQ.CURRVAL,:1, :2, :3, :4, :5, :6, :7)", ( bssal, hra, lta, pa, ca, pp, ts))
         connection.commit()
         return redirect('/')
-    return render_template('add.html')
+    cursor.execute("select dept_id, dept_name from department order by dept_id asc")
+    dropdown_data = cursor.fetchall()
+    return render_template('add.html', dropdown_data= dropdown_data)
 
  # Edit Employee data
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
@@ -80,7 +83,10 @@ def edit_employee(id):
         return redirect('/')
     cursor.execute("select t1.EMP_ID, t1.EMP_NAME, t1.EMP_SAL, t1.DEPT_ID, t1.DOB, t1.AADHAAR, t1.ACTIVE_STATUS, t.Basic_sal, t.HR_Alwc, t.lt_Alwc, t.Per_Alwc, t.City_alwc, t.perf_Pay , t.Total from employee_salary_details t, employee t1 where t.emp_id=t1.emp_id and t1.EMP_ID=:1", [id])
     employee = cursor.fetchone()
-    return render_template('edit.html', employee=employee, emp_id=id)
+    cursor.execute("select dept_id, dept_name from department order by dept_id asc")
+    dropdown_data = cursor.fetchall()
+    # return {'Name' : "Biswojit", "Age" : 24}
+    return render_template('edit.html', employee=employee, emp_id=id, dropdown_data=dropdown_data)
 
 
  # Delete Employee data
@@ -202,7 +208,7 @@ def download_pdf():
 
     # Title
     styles = getSampleStyleSheet()
-    title = Paragraph("<b>Employee Details Report</b>", styles["Title"])
+    title = Paragraph("<b>Employee Details Report</b>", styles["title"])
     elements.append(title)
     elements.append(Spacer(1, 12))
 

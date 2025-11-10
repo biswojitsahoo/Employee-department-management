@@ -64,3 +64,20 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
   outline: none;
 }
+
+select {
+  width: 100%;
+  padding: .6rem .75rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+}
+select:focus {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  outline: none;
+}
+option{
+  color: #0051ff;
+}

@@ -15,13 +15,18 @@
                 ID: <input type="text" readonly name="id" value = "{{ employee[0] }}"><br><br>
                 Name: <input type="text" name="name" value="{{ employee[1] }}" required><br><br>
                 Salary: <input type="number" readonly name="salary" value="{{ employee[2] }}" required><br><br>
-                deptid: <input type="number" name="deptid" value="{{ employee[3] }}" required><br><br>
+                <!-- deptid: <input type="number" name="deptid" value="{{ employee[3] }}" required><br><br> -->
+                Department Name:  <select id="deptid" name="deptid" value="{{ employee[3] }}">
+                {% for id, name in dropdown_data %}
+                <option value="{{ id }}">{{ id }} - {{ name }}</option>
+                {% endfor %}
+                </select><br><br>
                 Dob: <input type="date" name="dob" value="{{ employee[4] }}" required><br><br>
                 Aaadhar: <input type="number" name="aadhaar" value="{{ employee[5] }}" ><br><br>
-                <label for="activestatus">Active Status: </label>
-                <select id="activestatus" name="activestatus" value="{{ employee[6] }}">
+                Active Status: <select id="activestatus" name="activestatus" value="{{ employee[6] }}">
                 <option value="Active">Active</option>
                 <option value="Deleted">Deleted</option>
+                <option value="Terminated">Terminated</option>
                 </select><br><br>
 
             </div>
