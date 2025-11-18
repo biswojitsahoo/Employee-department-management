@@ -11,20 +11,18 @@
     <form id="salaryForm" method="POST">
         <div class="insideform">
             <h2>Add Employee</h2>
-            Name: <input type="text" name="name" required><br><br>
+            Name: <input type="text" name="name" placeholder="Enter your name" required><br><br>
             Salary: <input type="number" id="sal2" readonly name="salary"><br><br>
             <!-- deptid: <input type="number" name="deptid" required><br><br> -->
-            
-            Department Name:
-            
-            <select id="deptid" name="deptid">
+            Department Name: <select id="depid" name="deptid">
                 {% for id, name in dropdown_data %}
                 <option value="{{ id }}">{{ id }} - {{ name }}</option>
                 {% endfor %}
             </select><br><br>
             
             DOB: <input type="date" name="dob" required><br><br>
-            Aaadhar: <input type="number" name="aadhaar" required ><br><br>
+            Aaadhar: <input type="number" min ="100000000000" max="999999999999" required title="Aadhaar should be 12 digits" 
+            oninvalid="this.setCustomValidity('Aadhar should be 12 digits only')" name="aadhaar" placeholder="Enter Your 12 digit Aadhaar number" required ><br><br>
             Active Status: <select id="activestatus" name="activestatus">
                 <option value="Active">Active</option>
                 <option value="Deleted">Deleted</option>

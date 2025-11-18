@@ -14,11 +14,11 @@ app.secret_key = "biswojit0000sahoo"
 oracledb.init_oracle_client(lib_dir= r"C:\oracle\instantclient_23_9")
 # Oracle THIN Mode Connection
 connection = oracledb.connect(
-    user="user",
-    password="pass",
-    host="localhost",
+    user="pspdctmdev",
+    password="SummerDCTM_01_Dev",
+    host="AWSEPNNVAL0002",
     port=1521,
-    sid="xe"
+    sid="DNV55102"
 )
 
 # Fetch Employee data

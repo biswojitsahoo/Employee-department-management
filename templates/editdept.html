@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modify Department</title>
+    <link rel="stylesheet" href="/static/editdept.css">
 </head>
-<body>
-    <h2>Edit Department</h2>
-<form method="POST">
-    Department Id: <input type="number" name="depid" value="{{ department[0] }}" ><br><br>
-    Department Name: <input type="text" name="deptname" value="{{ department[1] }}"><br><br>
-    <button type="submit">Update</button>
-</form>
-</body>
+    <body>
+        <nav>
+            <h2 class="navhd">EDIT EXISTING DEPARTMENT</h2>
+        </nav> 
+        <form method="POST">
+            <div class="insideform">
+            <h2>Edit Department</h2>
+            Department Id: <input type="number" name="depid" value="{{ department[0] }}" ><br><br>
+            Department Name: <input type="text" name="deptname" value="{{ department[1] }}"><br><br>
+            <button type="submit">Update</button>
+            </div>
+        </form>
+    </body>
 </html>

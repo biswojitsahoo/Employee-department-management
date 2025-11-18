@@ -19,11 +19,19 @@ th{
 
 .btn {
   display: inline-block;
-  margin: inherit;
+  padding-top: 14px;
+  border-radius: 6px;
+  border: 2px solid rgba(170, 255, 144, 0.79);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 20px;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   background: green;
-  padding: 8px;
   color: white;
-  text-decoration: none;
+}
+
+.btn:hover {
+  background: #79b0e7;
 }
 .btn1 {
   display: inline-block;
@@ -37,13 +45,12 @@ th{
 
 .navbar {
   display: flex;
-  align-items: right;
-  gap: 12px;            /* optional spacing */
-  padding: 12px 16px;
+  justify-content: space-between;
+        /* optional spacing */
+
   /* background: #333; */
-  color: white;
+    padding: 5px 10px;
+  color: rgb(15, 15, 15);
+  background-color: aqua;
 }
 
-.navbar{
-  margin-left: auto;    /* pushes this button to the far right */
-}

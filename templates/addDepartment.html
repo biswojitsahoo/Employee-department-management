@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Department</title>
+    <link rel="stylesheet" href="/static/adddept.css">
 </head>
 <body>
-    <h2>Add New Department</h2>
+<nav>
+    <h2 class="navhd">ADD NEW DEPARTMENT</h2>
+</nav>
 <form method="POST">
-    Department ID: <input type="number" name="deptid" required><br><br>
-    Department Name: <input type="text" name="deptname" required><br><br>
+    <div class="insideform">
+            <h2>Add Department</h2>
+        Department ID: <input type="number" name="deptid" placeholder="Enter Unique Department ID" required><br><br>
+        Department Name: <input type="text" name="deptname" placeholder="Enter Unique Department Name" required><br><br>
     <button type="submit">Save</button>
+    </div>
 </form>
 </body>
 </html>
