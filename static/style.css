@@ -262,10 +262,11 @@ a.btn1:focus-visible {
 .dlbtn{
   display : flex;
   justify-content: space-between;
+  align-items: center
 }
 
 .dltbtn{
-  padding: 7px 20px;
+  padding: 8px 15px;
   border-radius: 6px;
   border: 2px solid rgba(170, 255, 144, 0.79);
   cursor: pointer;
@@ -284,6 +285,7 @@ a.btn1:focus-visible {
 
 .dltbtn-btn{
   padding-top: 10px;
+  justify-content: space-between;
 
 }
 
@@ -322,4 +324,36 @@ a.btn1:focus-visible {
 
 .clsbtn:hover{
   background: #abb7d0;
+}
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+.dropdown {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  min-width: 160px;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+  border-radius: 4px;
+}
+.dropdown-content a {
+  display: block;
+  padding: 8px 12px;
+  color: #333;
+  text-decoration: none;
+}
+.dropdown-content a:hover {
+  background: #f2f2f2;
+}
+/* Show on hover (or use JS to toggle on click) */
+.dropdown:hover .dropdown-content {
+  display: block;
 }

@@ -139,3 +139,7 @@ option{
   color: #0051ff;
   font: bold;
 }
+
+.error{
+  color: red;
+}

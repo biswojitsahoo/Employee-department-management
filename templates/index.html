@@ -17,8 +17,8 @@
 
     <!-- Right: Action Buttons -->
     <nav class="nav-actions" aria-label="User actions">
-      <a href="/add" class="btn">Add Employee</a>
-      <a href="/department" class="btn" target="_blank">Manage Department</a>
+      <a href="/add" class="btn">🆕Add Employee</a>
+      <a href="/department" class="btn" target="_blank">⚙️Manage Department</a>
     </nav>
   </header>
 <div class="dlbtn">
@@ -26,7 +26,24 @@
     <h2 class="headempdtl">Employee Details</h2>
   </div>
   <div class="dltbtn-btn">
-    <a href="/download_pdf" class="dltbtn" style="margin:10px;">Download PDF</a>
+
+      <div class="dropdown">
+          <input id="q" type="search" placeholder="Search names..." aria-label="Search names" />
+      </div>
+      <div class="dropdown">
+          <a href="" class="dltbtn" style="margin:10px;">❌ Deleted Employess ▾</a>
+      </div>
+      <div class="dropdown">
+          <a href="/audit_excel_forALL" class="dltbtn" style="margin:10px;">💾 Audit Trail</a>
+      </div>
+<!-- <a href="/download_pdf" class="dltbtn" style="margin:10px;">Download PDF</a> -->
+      <div class="dropdown">
+          <button class="dltbtn" aria-haspopup="true" aria-expanded="false">💾 Employee Report ▾</button>
+          <div class="dropdown-content" role="menu" aria-label="Options">
+            <a href="/download_excel" role="menuitem">Download Excel</a>
+            <a href="/download_pdf" role="menuitem" >Download PDF</a>
+          </div>
+      </div>
   </div>
 </div>
 <div id="tablediv">
@@ -49,14 +66,14 @@
     {% for emp in employees %}
     <tr>
         <td>{{ emp[0] }}</td>
-        <td>{{ emp[1] }}</td>
+        <td id="nm">{{ emp[1] }}</td>
         <td>{{ emp[2] }}</td>
         <td>{{ emp[3] }}</td>
         <td>{{ emp[4] }}</td>
         <td>{{ emp[5] }}</td>
         <td>{{ emp[6] }}</td>
         <td>{{ emp[7] }}</td>
-        <td>
+        <td style="width: 100px !important;">
             <button class="btn btn-info btn-sm view-btn" id="vwbtn"
                 data-bs-toggle="modal"
                 data-bs-target="#viewModal"
@@ -68,10 +85,11 @@
                 data-ca="{{ emp[12] }}"
                 data-pp="{{ emp[13] }}"
                 data-ts="{{ emp[14] }}">
-                View
+                🔎View
             </button> |
-            <a href="/edit/{{ emp[0] }}" class="btn1">Edit</a> |
-            <a href="/delete/{{ emp[0] }}" class="btn1" onclick="return confirm('Delete this employee?')">Delete</a>
+            <a href="/edit/{{ emp[0] }}" class="btn1">✏️Edit</a> |
+            <a href="/audit_excel/{{ emp[0] }}" class="btn1">⬇️ Audit</a> |
+            <a href="/delete/{{ emp[0] }}" class="btn1" onclick="return confirm('Delete this employee?')">🗑️Delete</a>
         </td>
     </tr>
     {% endfor %}
@@ -110,6 +128,19 @@
     </div>
   </div>
 </div>
+
+<script>
+const input = document.getElementById('q');
+const items = Array.from(document.querySelectorAll('#nm'));
+
+input.addEventListener('input', () => {
+  const term = input.value.trim().toLowerCase();
+  items.forEach(nm => {
+    const text = nm.textContent.toLowerCase();
+    nm.style.display = text.includes(term) ? '' : 'none';
+  });
+});
+</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

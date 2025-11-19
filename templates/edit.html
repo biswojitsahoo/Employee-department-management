@@ -22,7 +22,7 @@
                 {% endfor %}
                 </select><br><br>
                 Dob: <input type="date" name="dob" value="{{ employee[4] }}" required><br><br>
-                Aaadhar: <input type="number" name="aadhaar" value="{{ employee[5] }}" ><br><br>
+                Aaadhar: <input type="number" min ="100000000000" max="999999999999" required title="Aadhaar should be 12 digits" name="aadhaar" value="{{ employee[5] }}" ><br><br>
                 Active Status: <select id="activestatus" name="activestatus" value="{{ employee[6] }}">
                 <option value="Active">Active</option>
                 <option value="Deleted">Deleted</option>

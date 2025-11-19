@@ -22,7 +22,8 @@
             
             DOB: <input type="date" name="dob" required><br><br>
             Aaadhar: <input type="number" min ="100000000000" max="999999999999" required title="Aadhaar should be 12 digits" 
-            oninvalid="this.setCustomValidity('Aadhar should be 12 digits only')" name="aadhaar" placeholder="Enter Your 12 digit Aadhaar number" required ><br><br>
+             name="aadhaar" placeholder="Enter Your 12 digit Aadhaar number" required ><br><br>
+             <p class="error">*Aadhaar should be 12 digits</p>
             Active Status: <select id="activestatus" name="activestatus">
                 <option value="Active">Active</option>
                 <option value="Deleted">Deleted</option>

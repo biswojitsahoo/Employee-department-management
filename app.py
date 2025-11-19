@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash, send_file
+from flask import Flask, render_template, request, redirect, flash, send_file, abort
 import oracledb
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -7,6 +7,8 @@ import io
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
+import pandas as pd
+import logging
  
 app = Flask(__name__)
 app.secret_key = "biswojit0000sahoo" 
@@ -14,11 +16,11 @@ app.secret_key = "biswojit0000sahoo"
 oracledb.init_oracle_client(lib_dir= r"C:\oracle\instantclient_23_9")
 # Oracle THIN Mode Connection
 connection = oracledb.connect(
-    user="pspdctmdev",
-    password="SummerDCTM_01_Dev",
-    host="AWSEPNNVAL0002",
+    user="user",
+    password="pass",
+    host="host",
     port=1521,
-    sid="DNV55102"
+    sid="sid"
 )
 
 # Fetch Employee data
@@ -249,6 +251,163 @@ def download_pdf():
         mimetype='application/pdf'
     )
 
+# ---------------------------------------------------Start download user report in excel------------------------------------
+def fetch_user_report_xlsx():
+    cursor = connection.cursor()
+    cursor.execute("SELECT T.EMP_ID, T.EMP_NAME, T.EMP_SAL, T.DEPT_ID, T1.DEPT_NAME, TO_CHAR(T.DOB, 'YYYY-MM-DD') AS DOB, T.AADHAAR, T.ACTIVE_STATUS FROM EMPLOYEE T, DEPARTMENT T1 WHERE T.DEPT_ID=T1.DEPT_ID ORDER BY T.EMP_ID DESC")
+    rows = cursor.fetchall()
+    cols = [d[0] for d in cursor.description]
+    return cols, rows
+# -----------------------------------------------------------------------------
+# Route that returns an Excel file containing the audit rows for the given id
+# -----------------------------------------------------------------------------
+@app.route('/download_excel')
+def download_excel():
+    try:
+        columns, rows = fetch_user_report_xlsx()
+    except NotImplementedError as e:
+        # Development-time helpful message; in production return a 500 with generic text
+        abort(500, description=str(e))
+    except Exception as e:
+        # Handle DB errors gracefully
+        abort(500, description="Failed to fetch user rows")
+
+    # If there are no rows, return a small Excel file with headers (or return 404)
+    if not columns:
+        abort(404, description="No user columns available")
+
+    # Convert to DataFrame
+    df = pd.DataFrame(rows, columns=columns)
+
+    # Convert any special DB LOB objects to strings (if needed)
+    # Example safe conversion: map non-serializable values to str()
+    df = df.map(lambda v: v.read() if hasattr(v, "read") else v)  # handles file-like LOBs
+    df = df.fillna("")  # optional: replace NaN/None with empty string
+
+    # Write DataFrame to Excel in memory
+    output = io.BytesIO()
+    # Use XlsxWriter (or change engine to 'openpyxl' if preferred/installed)
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Report')
+        # writer._save()
+
+    output.seek(0)
+
+     # Create a safe filename including the audit_id
+    filename = f"Employee_Report.xlsx"
+
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name= filename,
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+
+# ---------------------------------------------------Start Audit trail for all------------------------------------
+def fetch_audit_rows1():
+    cursor = connection.cursor()
+    cursor.execute("select AUDIT_ID, EVENT_TYPE, PERFORMED_FOR, SECTION, ACTIVITY_DATE, EVENT_STATUS, OLD_VALUE, NEW_VALUE from testing_audit order by PERFORMED_FOR, ACTIVITY_DATE desc")
+    rows = cursor.fetchall()
+    cols = [d[0] for d in cursor.description]
+    return cols, rows
+# -----------------------------------------------------------------------------
+# Route that returns an Excel file containing the audit rows for the given id
+# -----------------------------------------------------------------------------
+@app.route('/audit_excel_forALL')
+def audit_excel_forAll():
+    try:
+        columns, rows = fetch_audit_rows1()
+    except NotImplementedError as e:
+        # Development-time helpful message; in production return a 500 with generic text
+        abort(500, description=str(e))
+    except Exception as e:
+        # Handle DB errors gracefully
+        abort(500, description="Failed to fetch audit rows")
+
+    # If there are no rows, return a small Excel file with headers (or return 404)
+    if not columns:
+        abort(404, description="No audit columns available")
+
+    # Convert to DataFrame
+    df = pd.DataFrame(rows, columns=columns)
+
+    # Convert any special DB LOB objects to strings (if needed)
+    # Example safe conversion: map non-serializable values to str()
+    df = df.map(lambda v: v.read() if hasattr(v, "read") else v)  # handles file-like LOBs
+    df = df.fillna("")  # optional: replace NaN/None with empty string
+
+    # Write DataFrame to Excel in memory
+    output = io.BytesIO()
+    # Use XlsxWriter (or change engine to 'openpyxl' if preferred/installed)
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Audit')
+        # writer._save()
+
+    output.seek(0)
+
+     # Create a safe filename including the audit_id
+    filename = f"audit_trail_for_all.xlsx"
+
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name= filename,
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+
+
+# --------------------------------------Start audit trail for user----------------------------
+def fetch_audit_rows(id):
+    cursor = connection.cursor()
+    cursor.execute("select AUDIT_ID, EVENT_TYPE, PERFORMED_FOR, SECTION, ACTIVITY_DATE, EVENT_STATUS, OLD_VALUE, NEW_VALUE from testing_audit where PERFORMED_FOR= :1",[id])
+    rows = cursor.fetchall()
+    cols = [d[0] for d in cursor.description]
+    return cols, rows
+# -----------------------------------------------------------------------------
+# Route that returns an Excel file containing the audit rows for the given id
+# -----------------------------------------------------------------------------
+@app.route('/audit_excel/<int:id>')
+def audit_excel(id):
+    try:
+        columns, rows = fetch_audit_rows(id)
+    except NotImplementedError as e:
+        # Development-time helpful message; in production return a 500 with generic text
+        abort(500, description=str(e))
+    except Exception as e:
+        # Handle DB errors gracefully
+        abort(500, description="Failed to fetch audit rows")
+
+    # If there are no rows, return a small Excel file with headers (or return 404)
+    if not columns:
+        abort(404, description="No audit columns available")
+
+    # Convert to DataFrame
+    df = pd.DataFrame(rows, columns=columns)
+
+    # Convert any special DB LOB objects to strings (if needed)
+    # Example safe conversion: map non-serializable values to str()
+    df = df.map(lambda v: v.read() if hasattr(v, "read") else v)  # handles file-like LOBs
+    df = df.fillna("")  # optional: replace NaN/None with empty string
+
+    # Write DataFrame to Excel in memory
+    output = io.BytesIO()
+    # Use XlsxWriter (or change engine to 'openpyxl' if preferred/installed)
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='Audit')
+        # writer._save()
+
+    output.seek(0)
+
+     # Create a safe filename including the audit_id
+    filename = f"audit_trail_{id}.xlsx"
+
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name= filename,
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
  
 if __name__ == '__main__':
     app.run(debug=True)
